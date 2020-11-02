@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="1dp"
+        android:layout_weight="1"
+        android:background="@color/white_color"
+        android:clipToPadding="true"
+        android:elevation="5dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_color"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_color"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/ivTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_timer_black_24dp" />
+
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/ivTimer"
+                    android:text="15:00"
+                    android:textColor="@color/black33"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNoOfQuesions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Question(1/10)"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvSubmitQuiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <View
+                style="@style/divider_style"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/tvQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:text="1. What type of animal is Bambi?"
+                android:textColor="@color/black33"
+                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/ivDiagram"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgAns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/first"
+                    style="@style/answer_text_view_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="One">
+
+                </RadioButton>
+
+                <View
+                    style="@style/divider_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <RadioButton
+                    android:id="@+id/second"
+                    style="@style/answer_text_view_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="two" />
+
+                <View
+                    style="@style/divider_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <RadioButton
+                    android:id="@+id/third"
+                    style="@style/answer_text_view_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="third" />
+
+                <View
+                    style="@style/divider_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <RadioButton
+                    android:id="@+id/four"
+                    style="@style/answer_text_view_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="four" />
+            </RadioGroup>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+    <!--    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/answer_container_style">
+            <TextView
+                android:layout_width="match_parent"
+                style="@style/answer_text_view_style"
+                android:layout_height="wrap_content"
+                android:text="One" />
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/answer_container_style">
+            <TextView
+                android:layout_width="match_parent"
+                style="@style/answer_text_view_style"
+                android:layout_height="wrap_content"
+                android:text="short answer" />
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/answer_container_style">
+            <TextView
+                android:layout_width="match_parent"
+                style="@style/answer_text_view_style"
+                android:layout_height="wrap_content"
+                android:text="One ksjdks skljds dksldjs dskdj kd kankda kadjd kdjkasd kajdd kajdkad alkdjkdj kajkajd akdjkald kladjkl" />
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/answer_container_style">
+            <TextView
+                android:layout_width="match_parent"
+                style="@style/answer_text_view_style"
+                android:layout_height="wrap_content"
+                android:text="One" />
+        </com.google.android.material.card.MaterialCardView>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="10dp"
+        android:background="@color/white_color"
+       >
+
+        <TextView
+            android:id="@+id/tvPrev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
+            android:text="Previous" />
+
+        <TextView
+            android:id="@+id/tvNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorAccent"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:drawableRight="@drawable/ic_navigate_next_black_24dp"
+            android:text="Next" />
+
+    </RelativeLayout>
+</LinearLayout>

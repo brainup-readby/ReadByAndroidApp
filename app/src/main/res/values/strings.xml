@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">ReadByApp</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="please_enter_name">Please enter first name</string>
+    <string name="please_enter_last_name">Please enter last name</string>
+    <string name="please_enter_email">Please enter email</string>
+    <string name="please_enter__valid_email">Please enter valid email</string>
+    <string name="please_enter_your_mobile_number">Please enter your mobile number</string>
+    <string name="please_enter_valid_mobile_number">Please enter valid mobile number</string>
+    <string name="we_have_sent_a_4_digit_otp_to">We have sent a 4 digit OTP to</string>
+    <string name="mob_no_format_with_91">+91%s</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="qus">Question Instruction</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="title_activity_dash_board">DashBoardActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="choose_board">
+        <item>UP BOARD</item>
+        <item>BIHAR BOARD</item>
+        <item>CBSE</item>
+        <item>ICSC</item>
+        <item>BTEUP</item>
+        <item>SBTE BIHAR</item>
+    </string-array>
+    <string-array name="choose_school">
+        <item>JV JAIN INTER COLLEGE</item>
+        <item>BAJORIYA COLLEGE</item>
+        <item>DPS</item>
+        <item>ICSC</item>
+    </string-array>
+    <string-array name="choose_stream">
+        <item>ART</item>
+        <item>SCIENCE</item>
+        <item>COMMERCE</item>
+    </string-array>
+    <string-array name="choose_year">
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>1 YEAR</item>
+        <item>2 YEAR</item>
+        <item>3 YEAR</item>
+    </string-array>
+    <string name="select_board_error">Please select Board name</string>
+    <string name="select_course_error">Please select Course name</string>
+    <string name="select_stream_error">Please select Stream name</string>
+    <string name="select_year_error">Please select year</string>
+    <string name="select_institute_error">Please select Institute name</string>
+    <string name="total_topics">total topics:%d</string>
+    <string name="view_pdf">View Pdf</string>
+    <string name="quiz_time">Duration: %1$s Minutes</string>
+    <string name="max_mark">Maximum Mark: %1$s</string>
+    <string name="total_mark_obtained">Total Mark Obtained: %1$s</string>
+    <string name="total_questions">Total Question: %1$s</string>
+    <string name="total_percentage">Total Percentage: %1$s</string>
+    <string name="attempt_questions">Attempt Question: %1$s</string>
+    <string name="overall_results">Over All Result Status: %1$s</string>
+    <string name="library">Library</string>
+    <string name="personalised">Personalised</string>
+    <string name="title_activity_lib_topic_list">LibTopicListActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="logout">Logout</string>
+    <string name="sure_for_logout">Are you sure you want to logout?</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+</resources>

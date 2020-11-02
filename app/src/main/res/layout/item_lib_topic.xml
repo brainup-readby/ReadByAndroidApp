@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.brainup.readbyapp.library.LibTopicListActivity.TopicHandler" />
+
+        <variable
+            name="topic"
+            type="com.brainup.readbyapp.auth.login.UserSelectedTopics" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+
+                android:onClick="@{()->handler.onCardClick(topic)}"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/ivTopic"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/maths" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvTopicName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/ivTopic"
+                    android:gravity="left"
+                    android:padding="3dp"
+                    android:text="@{topic.TOPIC_NAME}"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_topic_title"
+                    app:textAllCaps="true"
+                    tool:text="Wed,May 27 2020" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tvTopicName"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toRightOf="@id/ivTopic"
+                    android:background="@color/white_color" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/ivTopic"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivPlay"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+                        android:onClick="@{()->handler.onItemClick(topic)}"
+                        android:src="@drawable/ic_baseline_play_circle_filled_24" />
+
+                    <TextView
+                        android:id="@+id/tvPlay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/ivPlay"
+                        android:onClick="@{()->handler.onItemClick(topic)}"
+                        android:padding="5dp"
+                        android:text="Play"
+                        android:textColor="@color/white_color"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/ivDownload"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/tvDownload"
+                        android:onClick="@{()->handler.onPdfButtonClick(topic)}"
+                        android:src="@drawable/ic_baseline_picture_as_pdf_24" />
+
+                    <TextView
+                        android:id="@+id/tvDownload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:onClick="@{()->handler.onPdfButtonClick(topic)}"
+                        android:padding="5dp"
+                        android:text="Download"
+                        android:textColor="@color/white_color"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</layout>

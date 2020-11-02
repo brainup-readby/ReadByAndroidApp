@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data >
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/white_color"
+            android:clipToPadding="true"
+            android:elevation="5dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_color"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:padding="5dp"
+                    android:text="1. What type of animal is Bambi?"
+                    android:textColor="@color/black33"
+                    android:textSize="18sp" />
+                <ImageView
+                    android:id="@+id/ivDiagram"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+                <RadioGroup
+                    android:id="@+id/rgAns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/first"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="One">
+
+                    </RadioButton>
+
+                    <View
+                        style="@style/divider_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <RadioButton
+                        android:id="@+id/second"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="two" />
+
+                    <View
+                        style="@style/divider_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <RadioButton
+                        android:id="@+id/third"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="third" />
+
+                    <View
+                        style="@style/divider_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <RadioButton
+                        android:id="@+id/four"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="four" />
+                </RadioGroup>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+</layout>

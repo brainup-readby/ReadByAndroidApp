@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="course"
+            type="com.brainup.readbyapp.com.brainup.readbyapp.auth.model.Course" />
+
+        <variable
+            name="handle"
+            type="com.brainup.readbyapp.com.brainup.readbyapp.auth.ChooseCompetitiveActivity.ClickHandler" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{v->handle.onCourseClick(course)}"
+            android:text="@{course.courseName}"
+            android:textAllCaps="false"
+            android:textColor="@color/color_header_text"
+            android:textSize="14sp"
+            app:cornerRadius="10dp"
+            app:strokeWidth="1dp">
+
+        </com.google.android.material.button.MaterialButton>
+    </LinearLayout>
+</layout>

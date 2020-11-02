@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    <color name="colorPrimary">#6200EE</color>
+        <color name="colorPrimaryDark">#3700B3</color>
+        <color name="colorAccent">#03DAC5</color>
+        <color name="black33">#333333</color>-->
+    <color name="colorPrimary">#4FC3F7</color>
+    <!--  <color name="colorPrimaryDark">#388E3C</color>-->
+    <color name="colorPrimaryDark">#0288D1</color>
+    <!--   <color name="colorAccent">#8BC34A</color>-->
+    <color name="colorAccent">@color/color_header_text</color>
+    <color name="white_color">#ffffff</color>
+    <color name="light_green">#00008b</color>
+    <color name="dark_green">#4CAF50</color>
+    <color name="black33">#333333</color>
+    <color name="black66">#666666</color>
+    <color name="blackCC">#CCCCCC</color>
+    <color name="row_color">#f0f1f9</color>
+    <color name="colorHeader">#ede7f6</color>
+    <color name="textColor">#5c5c5c</color>
+    <color name="defaultTextColor">@android:color/black</color>
+    <color name="list_item_pressed">#c8c8c8c8</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="bg_color">#d3d3d3</color>
+    <color name="subject_child_color">#ff757575</color>
+    <color name="navigation_text_color_selected">#ff6c4ccb</color>
+    <color name="color_header_text">#44C5DE</color>
+    <color name="color_black">#000000</color>
+    <color name="color_topic_title">#754D4D4D</color>
+    <color name="color_divider">#1F000000</color>
+    <color name="dot_unselected">#F1F1F1</color>
+    <color name="icon_unselected">#BDBDBD</color>
+    <color name="color_topic_action">#8A666666</color>
+    <color name="color_card_selected">#44C5DE</color>
+</resources>

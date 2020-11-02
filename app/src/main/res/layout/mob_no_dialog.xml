@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tvMobNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Mobile Number"
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMobNo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_india_flag"
+            android:drawablePadding="5dp"
+            android:enabled="false"
+            android:inputType="number"
+            android:padding="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="+91"
+            android:textColor="@color/black33" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:width="0dp"
+            android:inputType="number"
+            android:maxLength="10"
+            android:padding="10dp"
+            android:textColor="@color/black33" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="@dimen/dialog_bar_padding"
+        android:text="Info"
+        android:textColor="@color/white_color"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtTitle2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="Delete"
+        android:textColor="@color/white_color"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/dialog_bar_padding_left"
+        android:paddingTop="@dimen/dialog_bar_close_icon_padding"
+        android:paddingRight="@dimen/dialog_bar_padding_left"
+        android:paddingBottom="@dimen/dialog_bar_close_icon_padding"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/dialog_bar_sutitle_margin_left"
+        android:gravity="center"
+        android:paddingTop="@dimen/dialog_bar_sutitle_padding_top"
+        android:text="Are you sure you wan to remove ? "
+        android:textColor="@color/black33"
+        android:textSize="@dimen/dialog_bar_subtitle_size"
+        android:visibility="gone" />
+
+
+
+    <!--    <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtSubtitle"
+            android:layout_marginLeft="@dimen/dialog_bar_editText_margin_left"
+            android:layout_marginTop="@dimen/dialog_bar_editText_margin_right" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/outlinedTextField"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:paddingTop="@dimen/dialog_bar_linear_padding_top"
+        android:paddingBottom="@dimen/dialog_bar_linear_padding_bottom">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/txtNegativeButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:lines="1"
+            android:paddingLeft="5dp"
+            android:paddingTop="10.5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10.5dp"
+            android:text="Cancel"
+            android:textColor="@color/black33" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/txtPositiveButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:paddingLeft="5dp"
+            android:paddingTop="10.5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10.5dp"
+            android:text="Submit"
+            android:textColor="@color/black33" />
+
+    </LinearLayout>
+
+</LinearLayout>

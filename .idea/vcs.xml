@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/elearning24" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mgapp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/mobisquid" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sgt" vcs="Git" />
+  </component>
+</project>

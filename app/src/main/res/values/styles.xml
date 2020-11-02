@@ -1,0 +1,119 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="cornerRadius">55dp</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="NoBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">20dp</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ONBoardingTheme" parent="@style/NewAppTheme">
+        <item name="android:windowBackground">@drawable/splash_online_background</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/color_header_text</item>
+    </style>
+
+    <style name="NewAppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorSecondary">@color/subject_child_color</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:textColorHighlight">@color/navigation_text_color_selected</item>
+        <item name="android:textColorHint">@color/subject_child_color</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowActionModeOverlay">@null</item>
+        <item name="android:colorFocusedHighlight">@color/navigation_text_color_selected</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:colorControlNormal">#ffe0e0e0</item>
+        <item name="android:colorControlActivated">@color/navigation_text_color_selected</item>
+        <item name="android:colorControlHighlight">@color/list_item_pressed</item>
+        <item name="android:colorPrimary">@color/navigation_text_color_selected</item>
+        <item name="android:colorAccent">@color/navigation_text_color_selected</item>
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/shared_element_enter_exit
+        </item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/shared_element_enter_exit
+        </item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/white_color</item>
+        <item name="colorAccent">@color/navigation_text_color_selected</item>
+    </style>
+
+    <style name="CustomThmeForDialog" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:textColor">@color/defaultTextColor</item>
+        <item name="android:background">@color/white_color</item>
+        <item name="DialogTitleText">Uploading your post...</item>
+        <item name="DialogSpotColor">@color/colorPrimary</item>
+        <item name="DialogSpotCount">8</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- <item name="colorPrimary">@color/shrine_pink_100</item>
+         <item name="colorSecondary">@color/shrine_pink_100</item>
+         <item name="colorSurface">@color/shrine_pink_light</item>
+         <item name="colorOnSurface">@color/shrine_pink_900</item>-->
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/color_header_text</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button" parent="">
+        <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+    <style name="divider_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/blackCC</item>
+    </style>
+    <style name="answer_text_view_style">
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/black66</item>
+    </style>
+</resources>

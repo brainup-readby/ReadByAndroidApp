@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.brainup.readbyapp.widgets.RoundCornerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:background="@color/design_default_color_error"
+   android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+</com.brainup.readbyapp.widgets.RoundCornerLayout>
