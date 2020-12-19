@@ -27,6 +27,7 @@ class SubscriptionListAdapter(
         val chapters = list?.get(position)
         val itemBinding = holder.binding as SubsItemChapterBinding
         itemBinding.chapter = chapters
+        itemBinding.handler=handler
         itemBinding.executePendingBindings()
     }
 

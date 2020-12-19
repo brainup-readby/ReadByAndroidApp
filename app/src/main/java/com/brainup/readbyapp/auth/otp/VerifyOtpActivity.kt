@@ -108,19 +108,13 @@ class VerifyOtpActivity : BaseActivity() {
             ) {
                 if (s.length == 4) {
                     if (isCallingFromReg) {
-                        //callRegistrationVerifyOtp("1234")
-
                         callRegistrationVerifyOtp(s.toString())
                     } else {
-
-                        //callLoginVerifyOtp("1234")
-
                         callLoginVerifyOtp(s.toString())
                     }
 
                 }
             }
-
             override fun afterTextChanged(s: Editable) {}
         })
         btnResend.setOnClickListener {
@@ -201,7 +195,7 @@ class VerifyOtpActivity : BaseActivity() {
                         pinView.setText("")
                         Toast.makeText(this, "Wrong otp enter", Toast.LENGTH_SHORT).show()
                     }
-                    //finish()
+                    //sh()
                 }
             } else if (it.code == Constants.ERROR_CODE) {
                 pinView.setText("")

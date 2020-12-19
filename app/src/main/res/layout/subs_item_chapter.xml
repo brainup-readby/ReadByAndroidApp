@@ -5,7 +5,9 @@
         <variable
             name="chapter"
             type="com.brainup.readbyapp.auth.login.UserSubscription" />
-
+        <variable
+            name="handler"
+            type="com.brainup.readbyapp.com.brainup.readbyapp.profile.SUbscriptionListActivity.SubsClickHandler" />
     </data>
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardContainer"
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:gravity="center_horizontal"
+        android:onClick="@{()-> chapter != null ? handler.onItemClick(chapter):null}"
         android:orientation="vertical">
 
 

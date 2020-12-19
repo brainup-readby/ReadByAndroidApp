@@ -50,62 +50,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:padding="@dimen/dialog_bar_padding"
-        android:text="Info"
-        android:textColor="@color/white_color"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/txtTitle2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="Delete"
-        android:textColor="@color/white_color"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:paddingLeft="@dimen/dialog_bar_padding_left"
-        android:paddingTop="@dimen/dialog_bar_close_icon_padding"
-        android:paddingRight="@dimen/dialog_bar_padding_left"
-        android:paddingBottom="@dimen/dialog_bar_close_icon_padding"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/txtSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/dialog_bar_sutitle_margin_left"
-        android:gravity="center"
-        android:paddingTop="@dimen/dialog_bar_sutitle_padding_top"
-        android:text="Are you sure you wan to remove ? "
-        android:textColor="@color/black33"
-        android:textSize="@dimen/dialog_bar_subtitle_size"
-        android:visibility="gone" />
-
-
-
-    <!--    <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtSubtitle"
-            android:layout_marginLeft="@dimen/dialog_bar_editText_margin_left"
-            android:layout_marginTop="@dimen/dialog_bar_editText_margin_right" />-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

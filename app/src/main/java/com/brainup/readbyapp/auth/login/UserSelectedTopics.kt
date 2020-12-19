@@ -1,5 +1,6 @@
 package com.brainup.readbyapp.auth.login
 
+import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.MasTopicStatus
 import java.io.Serializable
 
 data class UserSelectedTopics(
@@ -13,5 +14,6 @@ data class UserSelectedTopics(
     val TEST_STATUS: String,
     val VIDEO_URL: String,
     val icon_path: String,
-    var isEnable: Boolean
+    var isEnable: Boolean,
+    var MAS_TOPIC_STATUS: MasTopicStatus
 ) : Serializable

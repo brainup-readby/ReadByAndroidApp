@@ -25,11 +25,11 @@
             app:cardCornerRadius="3dp"
             app:cardElevation="5dp"
             app:cardUseCompatPadding="true">
-
+<!--            android:onClick="@{()->handler.onCardClick(topic)}"-->
             <RelativeLayout
                 android:layout_width="match_parent"
 
-                android:onClick="@{()->handler.onCardClick(topic)}"
+
                 android:layout_height="wrap_content"
                 android:padding="20dp">
 

@@ -22,6 +22,13 @@ class LoginViewModel : ViewModel() {
         return ApiClient.client?.postLogin(mobNo)
     }
 
+    fun checkMultipleLogin(mobNo: String): LiveData<ApiResponse<CommonResponse<Boolean>>>? {
+        val mob = StringBuilder()
+       // mob.append("+91")
+        mob.append(mobNo)
+        return ApiClient.client?.checkUserMultipleLogin(mobNo)
+    }
+
     fun sendRegOtp(mobNo: String): LiveData<ApiResponse<CommonResponse<String>>>? {
         val mob = StringBuilder()
         mob.append("+91")
@@ -52,6 +59,12 @@ class LoginViewModel : ViewModel() {
                     )
             }
         }
+    }
+
+    fun logout(mobNo: String): LiveData<ApiResponse<LogoutResponse>>? {
+        val mob = StringBuilder()
+        mob.append(mobNo)
+        return ApiClient.client?.logout(mobNo)
     }
 
     /*  // A placeholder username validation check

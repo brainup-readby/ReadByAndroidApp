@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.brainup.readbyapp.R
 import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModel
+import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModelWithStatusID
 import com.brainup.readbyapp.quiz.model.model.*
 import com.brainup.readbyapp.rest.ApiClient
 import com.brainup.readbyapp.rest.ApiResponse
@@ -26,6 +27,10 @@ class QuizResultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun updateVideoFlag(list : VideoRequestModel): LiveData<ApiResponse<TopicStatusResposeModel>>? {
         return ApiClient.client?.updateVideoFlag(list)
+    }
+
+    fun updateVideoFlagWithID(list : VideoRequestModelWithStatusID): LiveData<ApiResponse<TopicStatusResposeModel>>? {
+        return ApiClient.client?.updateVideoFlagWithID(list)
     }
 
 

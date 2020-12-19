@@ -13,6 +13,7 @@ import com.brainup.readbyapp.R
 import com.brainup.readbyapp.base.BaseActivity
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.otp.VerifyOtpActivity
 import com.brainup.readbyapp.utils.Constants
+import com.brainup.readbyapp.utils.PrefrenceData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -52,7 +53,10 @@ class LoginActivity : BaseActivity() {
                 tiRegisterMobile.error = getString(loginState.mobNoError)
             }
             if (loginState.isDataValid && loginState.isLoginData) {
-                callSendLoginOtpApi()
+
+                callApiToCheckMultipleLogins()
+
+
             } else if (loginState.isDataValid && !loginState.isLoginData) {
                 callSendRegOtpApi()
             }
@@ -65,6 +69,83 @@ class LoginActivity : BaseActivity() {
         })
 
         //showBottomSheet()
+    }
+
+    private fun callApiToCheckMultipleLogins() {
+        progressDialog.show()
+        loginViewModel.checkMultipleLogin(etMobile.text.toString())?.observe(this, Observer {
+            progressDialog.dismiss()
+            if (it.isSuccessful) {
+
+                val body = it.body
+                if (body != null && body.status == Constants.STATUS_SUCCESS) {
+                    val data = body.data
+                    if(data){
+                        callSendLoginOtpApi()
+                    }else{
+                        val items = arrayOf("Logout")
+                        val alertDialogBuilder =
+                            MaterialAlertDialogBuilder(
+                                this,
+                                R.style.ThemeOverlay_App_MaterialAlertDialog
+                            ).create()
+                        MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                            .setTitle("Alert!")
+                            .setMessage(getString(R.string.multiple_login))
+                            .setPositiveButton(
+                                resources.getString(R.string.Logout)
+                            ) { dialog, id ->
+                                mLogout(etMobile.text.toString())
+                                alertDialogBuilder.dismiss()
+                            }.setCancelable(false)
+                            .show()
+                    }
+
+                }
+            } else if (it.code == Constants.ERROR_CODE) {
+                //progressDialog.dismiss()
+                if (!it.errorMessage.isNullOrEmpty()) {
+                    Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this, "Network Error. please try again later.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun mLogout(mobileNumber:String) {
+
+        loginViewModel.logout(mobileNumber)?.observe(this, Observer {
+
+            if (it.isSuccessful) {
+
+                val body = it.body
+                if (body != null && body.status == Constants.STATUS_SUCCESS) {
+                    val data = body.data
+                    if(data.MOBILE_NO.toString().equals(mobileNumber) && data.LOGIN_FLAG.equals("f")){
+                        PrefrenceData.setUserLoginFromLogout(this, false)
+                        PrefrenceData.setMobNo(this, "")
+                        PrefrenceData.setUserId(this,"")
+                        PrefrenceData.clearAllData(this)
+                       // dialogBuilder.dismiss()
+//                        val intent = Intent(this, LoginActivity::class.java)
+//                        intent.flags =
+//                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                        startActivity(intent)
+                    }
+
+                }
+            } else if (it.code == Constants.ERROR_CODE) {
+                // progressDialog.dismiss()
+                val msg = it.errorMessage
+                if (!msg.isNullOrBlank()) {
+                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+                }else{
+
+                    Toast.makeText(this, "Network Error please try again in sometime.", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
     private fun callSendLoginOtpApi() {

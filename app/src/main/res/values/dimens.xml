@@ -47,8 +47,8 @@
     <dimen name="dialog_bar_sutitle_margin_left">8sp</dimen>
     <dimen name="dialog_bar_editText_margin_left">4sp</dimen>
     <dimen name="dialog_bar_editText_margin_right">15sp</dimen>
-    <dimen name="dialog_bar_linear_padding_top">15sp</dimen>
-    <dimen name="dialog_bar_linear_padding_bottom">25sp</dimen>
+    <dimen name="dialog_bar_linear_padding_top">5sp</dimen>
+    <dimen name="dialog_bar_linear_padding_bottom">5sp</dimen>
     <!--
     Because the window insets on round devices are larger than 15dp, this padding only applies
     to square screens.

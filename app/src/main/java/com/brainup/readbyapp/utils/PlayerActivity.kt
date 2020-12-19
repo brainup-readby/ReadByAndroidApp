@@ -266,5 +266,10 @@ class PlayerActivity : AppCompatActivity(), Player.EventListener {
         const val KEY_SCREEN = "keyScreen"
         const val KEY_TITLE = "keyTitle"
         const val TOPIC_ID = "topic_id"
+        const val USER_SUBS = "user_subs"
+        const val TOPIC_STATUS_ID = "topic_status_id"
+        const val TEST_STATUS= "test_status"
+        const val VIDEO_SEEN_STATUS= "seen_status"
+
     }
 }

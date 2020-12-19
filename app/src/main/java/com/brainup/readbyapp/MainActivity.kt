@@ -22,7 +22,12 @@ class MainActivity : AppCompatActivity() {
         var subject_id = "subject_id"
         var chapter_id = "chapter_id"
         var topic_id = "topic_id"
-
+        var course_id = 0
+        var subs_id = 0
+        var course_price = 0.0
+        var subscription_flag = "subscription_flag"
+        var is_From_Profile = "from_profile"
+        var for_First_time = "Y"
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -93,7 +93,6 @@ class QuizActivityNew : BaseActivity() {
 
             val selectedSubject = intent.getSerializableExtra(KEY_SELECTED_TOPIC) as UserSelectedTopics
             getQusList(selectedSubject.TOPIC_ID.toString())
-            //getQusList("1")
 
 
 

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.brainup.readbyapp.MainActivity
 import com.brainup.readbyapp.auth.login.UserSelectedSubject
 import com.brainup.readbyapp.com.brainup.readbyapp.common.CustomViewHolder
 import com.brainup.readbyapp.databinding.ItemCategoryParentBinding
@@ -40,6 +41,7 @@ class CategoryParentAdapter : ListAdapter<UserSelectedSubject, CustomViewHolder>
         val itemBinding = holder.binding as ItemCategoryParentBinding
 
         itemBinding.bookCategory = currentBookCategory
+       // MainActivity.subject_id = currentBookCategory.SUBJECT_ID.toString()
         itemBinding.nestedRecyclerView.setRecycledViewPool(viewPool)
         itemBinding.executePendingBindings()
     }

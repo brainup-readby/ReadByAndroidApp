@@ -1,7 +1,8 @@
 package com.brainup.readbyapp.utils
 
 object Constants {
-    const val BASE_URL = "http://ec2-3-6-41-212.ap-south-1.compute.amazonaws.com:8764/readBy/"
+    const val BASE_URL = "http://ec2-3-6-41-212.ap-south-1.compute.amazonaws.com:8764/"
+    //const val BASE_URL = "http://192.168.31.63:8764/"
 
     // val BASE_URL = "http://3.20.90.166:8080/elearning/"
     const val SUCCESS = "success"
@@ -32,5 +33,5 @@ object Constants {
     const val KEY_MESSAGE = "data"
     const val REQ_USER_CONSENT = 202
     const val TOKEN =
-        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoic2lkIiwiYXV0aG9yaXRpZXMiOlt7ImRlbGVnYXRlIjoib3JnLnNwcmluZ2ZyYW1ld29yay5zZWN1cml0eS5jb3JlLkdyYW50ZWRBdXRob3JpdHkiLCJvd25lciI6Im9yZy5zcHJpbmdmcmFtZXdvcmsuc2VjdXJpdHkuY29yZS5HcmFudGVkQXV0aG9yaXR5IiwidGhpc09iamVjdCI6bnVsbCwicmVzb2x2ZVN0cmF0ZWd5IjowLCJkaXJlY3RpdmUiOjAsInBhcmFtZXRlclR5cGVzIjpbXSwibWF4aW11bU51bWJlck9mUGFyYW1ldGVycyI6MCwibWV0aG9kIjoiZ2V0QXV0aG9yaXR5In1dfQ.2thf6utHk5P1pxVLT_a5U5dzTBeDzsaaQ__C2a2SqlsN8cjBCWQpZgXWfN3W_Ja5zM1cB5FvgS5h93Dp2I4g0A"
+        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoicmVhZCIsImF1dGhvcml0aWVzIjpbeyJkZWxlZ2F0ZSI6Im9yZy5zcHJpbmdmcmFtZXdvcmsuc2VjdXJpdHkuY29yZS5HcmFudGVkQXV0aG9yaXR5Iiwib3duZXIiOiJvcmcuc3ByaW5nZnJhbWV3b3JrLnNlY3VyaXR5LmNvcmUuR3JhbnRlZEF1dGhvcml0eSIsInRoaXNPYmplY3QiOm51bGwsInJlc29sdmVTdHJhdGVneSI6MCwiZGlyZWN0aXZlIjowLCJwYXJhbWV0ZXJUeXBlcyI6W10sIm1heGltdW1OdW1iZXJPZlBhcmFtZXRlcnMiOjAsIm1ldGhvZCI6ImdldEF1dGhvcml0eSJ9XX0.nOgf_twKN_lhmHMIl1reTwrNN71QiAaeyu9iB5ytRv21gpvU4PR7v9JI9X2vNYZ9TETrsxCRLe3GaezJbGgyig"
 }

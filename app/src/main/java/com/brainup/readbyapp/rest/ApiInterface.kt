@@ -4,8 +4,13 @@ import androidx.lifecycle.LiveData
 import com.brainup.readbyapp.auth.login.UserData
 import com.brainup.readbyapp.auth.registration.BoardData
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.acadmic.SubscriptionModel
+import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.LogoutResponse
+import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.RateAppResponse
+import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.RateAppRequest
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.registration.UserInfo
 import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModel
+import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModelWithStatusID
+import com.brainup.readbyapp.payment.model.Data
 import com.brainup.readbyapp.payment.model.InitiatePaymentRequest
 import com.brainup.readbyapp.payment.model.InitiatePaymentResponse
 import com.brainup.readbyapp.quiz.model.model.*
@@ -52,25 +57,36 @@ interface ApiInterface {
     @GET(Routs.GET_QUIZ_LIST)
     fun getQuizList(@Query("topicId") id: String): LiveData<ApiResponse<QusListResponse>>
 
-
-
     @POST(Routs.SUBMIT_QUIZ_LIST)
-    fun submitQuizList(@Body list : QusRequestModel): LiveData<ApiResponse<SubmitQusResponse>>
-
-
+    fun submitQuizList(@Body list: QusRequestModel): LiveData<ApiResponse<SubmitQusResponse>>
 
     @POST(Routs.UPDATE_TOPIC_STATUS)
-    fun updateTopicFlag(@Body list : TestRequestModel): LiveData<ApiResponse<TopicStatusResposeModel>>
-
+    fun updateTopicFlag(@Body list: TestRequestModel): LiveData<ApiResponse<TopicStatusResposeModel>>
 
     @POST(Routs.UPDATE_TOPIC_STATUS)
-    fun updateVideoFlag(@Body list : VideoRequestModel): LiveData<ApiResponse<TopicStatusResposeModel>>
+    fun updateVideoFlag(@Body list: VideoRequestModel): LiveData<ApiResponse<TopicStatusResposeModel>>
 
-
+    @POST(Routs.UPDATE_TOPIC_STATUS)
+    fun updateVideoFlagWithID(@Body list: VideoRequestModelWithStatusID): LiveData<ApiResponse<TopicStatusResposeModel>>
 
     @POST(Routs.GET_INITIAL_PAYMENTS)
-    fun getInitiatePayment(@Body list : InitiatePaymentRequest): LiveData<ApiResponse<InitiatePaymentResponse>>
+    fun getInitiatePayment(@Body list: InitiatePaymentRequest): LiveData<ApiResponse<InitiatePaymentResponse>>
 
+    @POST(Routs.RATE_APP_API)
+    fun rateAppApi(@Body rateAppRequest: RateAppRequest): LiveData<ApiResponse<RateAppResponse>>
+
+    @GET(Routs.CHECK_Multiple_LOGIN)
+    fun checkUserMultipleLogin(
+        @Query(Constants.QUERY_MOB_NO) mobNo: String?
+    ): LiveData<ApiResponse<CommonResponse<Boolean>>>
+
+    @GET(Routs.LOGOUT_USER)
+    fun logout(
+        @Query(Constants.QUERY_MOB_NO) mobNo: String?
+    ): LiveData<ApiResponse<LogoutResponse>>
+
+    @POST(Routs.SEND_PAYMENT_STATUS)
+    fun sendPaymentStatus(@Body paymentStatus:Data): LiveData<ApiResponse<InitiatePaymentResponse>>
 
 
     /*@GET(Routs.POST_LOGIN)

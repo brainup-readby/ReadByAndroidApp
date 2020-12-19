@@ -30,9 +30,27 @@
         android:layout_height="match_parent"
         app:autoPlay="true"
         android:clipToPadding="true"
-        android:paddingRight="10dp"
-        app:showOriginalControls="false"
+        app:showOriginalControls="true"
         app:showFullscreenOption="true"
+        app:showMenuOption="true"
+        app:aspectRatio="2.2"
         />
+
+
+
+<!--    <com.ct7ct7ct7.androidvimeoplayer.view.VimeoPlayerView-->
+<!--        android:id="@+id/vimeoPlayer"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:autoPlay="true"-->
+<!--        android:clipToPadding="false"-->
+<!--        app:showOriginalControls="true"-->
+<!--        app:showFullscreenOption="true"-->
+<!--        app:loop="false"-->
+<!--        app:muted="false"-->
+<!--        app:showMenuOption="false"-->
+<!--        app:showTitle="false"-->
+<!--        app:aspectRatio="1.8"-->
+<!--        />-->
 
 </LinearLayout>

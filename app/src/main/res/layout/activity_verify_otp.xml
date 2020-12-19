@@ -50,7 +50,7 @@
         android:layout_marginTop="20dp"
         android:cursorVisible="true"
         android:inputType="number"
-        android:text="12345"
+        android:text=""
         android:textColor="@color/black33"
         android:textSize="18sp"
         android:textStyle="bold"

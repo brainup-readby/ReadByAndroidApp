@@ -1,6 +1,8 @@
 package com.brainup.readbyapp.com.brainup.readbyapp.dashboard
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -12,8 +14,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.brainup.readbyapp.R
 import com.brainup.readbyapp.base.BaseActivity
+import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.LoginActivity
+import com.brainup.readbyapp.utils.Constants
 import com.brainup.readbyapp.utils.PrefrenceData
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_login.*
 
 class DashBoardActivity : BaseActivity() {
 
@@ -37,7 +43,8 @@ class DashBoardActivity : BaseActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
-                R.id.navigation_profile
+                R.id.navigation_profile,
+                R.id.navigation_help
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

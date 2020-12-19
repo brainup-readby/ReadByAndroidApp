@@ -17,9 +17,17 @@ import kotlinx.android.synthetic.main.activity_subject_list.*
 
 
 class ChapterListActivity : AppCompatActivity() {
+
+    private var courseId: Int = 0
+    private var subscriptionId: Int = 0
+    private var coursePrice: Double = 0.0
+
     companion object {
         const val KEY_TITLE = "keyTitle"
         const val KEY_SELECTED_SUBJECT = "keySelectedSubject"
+        const val KEY_COURSE_ID = "keyCourseId"
+        const val KEY_SUBS_ID = "keySubsId"
+        const val KEY_COURSE_PRICE = "keyCoursePrice"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +37,7 @@ class ChapterListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_subject_list)
         val selectedSubject =
             intent.getSerializableExtra(KEY_SELECTED_SUBJECT) as UserSelectedSubject
+
         setContentView(R.layout.activity_subject_list)
         tvStudentName.text = "Hi "+PrefrenceData.getUserName(this)
         rvChapterList.adapter = ChapterListAdapter(selectedSubject.MAS_CHAPTERS, ChapterClickHandler(this))

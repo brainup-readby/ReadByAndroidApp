@@ -48,7 +48,6 @@ class InitializQuizActivity : BaseActivity() {
         initProgressbar(this)
         val selectedSubject = intent.getSerializableExtra(KEY_SELECTED_TOPIC) as UserSelectedTopics
         getQusList(selectedSubject.TOPIC_ID.toString())
-        //getQusList("1")
         setupToolbar()
         findViewById<TextView>(R.id.tvSubmitQuiz).setOnClickListener {
             val intent = Intent(this@InitializQuizActivity, QuizActivityNew::class.java)
@@ -66,7 +65,6 @@ class InitializQuizActivity : BaseActivity() {
         }
     }
 
-
     private fun getQusList(id: String) {
         progressDialog.show()
         viewModel.getQuestionList(id)
@@ -82,9 +80,46 @@ class InitializQuizActivity : BaseActivity() {
     }
 
     private fun setuiView(body: QusListResponse?) {
-        qname.setText(body!!.data.QNAME)
-        qdes.setText(body!!.data.DETAIL_DESC)
-        totalqsn.setText(""+body!!.data.QCOUNT)
+
+        if(body != null){
+
+            if(body.data != null){
+
+                if(body.data.QNAME != null){
+                    qname.setText(body.data.QNAME)
+                }else{
+                    Toast.makeText(
+                            this@InitializQuizActivity,
+                            "Quiz not available.",
+                            Toast.LENGTH_LONG
+                    ).show()
+                    onBackPressed()
+                }
+                if(body.data.DETAIL_DESC != null){
+                    qdes.setText(body!!.data!!.DETAIL_DESC!!)
+                }
+                if(""+body.data.QCOUNT != null){
+                    totalqsn.setText(""+body!!.data.QCOUNT!!)
+                }
+            }else{
+                Toast.makeText(
+                        this@InitializQuizActivity,
+                        "Quiz not available.",
+                        Toast.LENGTH_LONG
+                ).show()
+                onBackPressed()
+            }
+        }else{
+            Toast.makeText(
+                    this@InitializQuizActivity,
+                    "Quiz not available.",
+                    Toast.LENGTH_LONG
+            ).show()
+            onBackPressed()
+        }
+
+
+
 
     }
 

@@ -1,6 +1,10 @@
 package com.brainup.readbyapp.auth.login
 
+import android.os.Parcelable
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.StudentStudyState
+import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
+
 
 data class UserSubscription(
     val BOARD_ID: Int,
@@ -18,5 +22,6 @@ data class UserSubscription(
     val STREAM_ID: Int,
     val SUBSCRIPTION_ID: Int,
     val USER_ID: Int,
-    val YEAR_ID: Int
-)
+    val YEAR_ID: Int,
+    val SUBSCRIPTION_FLAG: String
+) : Serializable

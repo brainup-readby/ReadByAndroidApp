@@ -18,28 +18,35 @@ package com.brainup.readbyapp.com.brainup.readbyapp.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.brainup.readbyapp.MainActivity
 import com.brainup.readbyapp.R
 import com.brainup.readbyapp.base.BaseActivity
 import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModel
+import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModelWithStatusID
 import com.brainup.readbyapp.com.brainup.readbyapp.quiz.viewmodel.QuizResultViewModel
+import com.brainup.readbyapp.com.brainup.readbyapp.utils.PlayerActivity.Companion.TEST_STATUS
 import com.brainup.readbyapp.com.brainup.readbyapp.utils.PlayerActivity.Companion.TOPIC_ID
+import com.brainup.readbyapp.com.brainup.readbyapp.utils.PlayerActivity.Companion.TOPIC_STATUS_ID
+import com.brainup.readbyapp.com.brainup.readbyapp.utils.PlayerActivity.Companion.USER_SUBS
+import com.brainup.readbyapp.com.brainup.readbyapp.utils.PlayerActivity.Companion.VIDEO_SEEN_STATUS
+import com.brainup.readbyapp.utils.PrefrenceData
 import com.ct7ct7ct7.androidvimeoplayer.listeners.VimeoPlayerStateListener
 import com.ct7ct7ct7.androidvimeoplayer.model.PlayerState
 import com.ct7ct7ct7.androidvimeoplayer.view.VimeoPlayerActivity
 import com.google.android.exoplayer2.SimpleExoPlayer
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.new_activity_player.*
+import kotlinx.android.synthetic.main.new_activity_player.view.*
 import java.util.*
 
-/**
- * A fullscreen activity to play audio or video streams.
- */
+
 class NewPlayerActivity : BaseActivity() {
      private var  isVideoStatus :String ="p"
     private lateinit var player: SimpleExoPlayer
@@ -49,19 +56,42 @@ class NewPlayerActivity : BaseActivity() {
     private var playedTime: Long = 0
     private lateinit var viewModel: QuizResultViewModel
     var REQUEST_CODE = 1234
-
+    private lateinit var testStatus: String
+    private lateinit var topicStatusId: String
+    private lateinit var topicSubscription: String
+    private lateinit var userId: String
       lateinit var  videoId :String
+      private  var activityFlagTopic: String = "N"
+    private  var activityFlagLibrary: String = "N"
     var myCountDownTimer: MyCountDownTimer? = null
+    private lateinit var videoStatusSeen: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_player)
+
          viewModel = ViewModelProvider(this).get(QuizResultViewModel::class.java)
          url = intent.getStringExtra(KEY_URL)!!
          topic_id = intent.getStringExtra(TOPIC_ID)!!
-        // url = "https://player.vimeo.com/video/464700822"
-        var   tr = url.replace("https://vimeo.com/","")
-        var  tsr  = StringTokenizer(tr,"/")
-        videoId =   tsr.nextToken()
+        topicSubscription = intent.getStringExtra(USER_SUBS)!!
+        topicStatusId = intent.getStringExtra(TOPIC_STATUS_ID)!!
+        testStatus = intent.getStringExtra(TEST_STATUS)!!
+        videoStatusSeen = intent.getStringExtra(VIDEO_SEEN_STATUS)!!
+        userId = PrefrenceData.getUserId(this)
+        if(intent.getStringExtra("IS_FROM_TOPIC") != null){
+            activityFlagTopic = intent.getStringExtra("IS_FROM_TOPIC")!!
+        }
+        if(intent.getStringExtra("IS_FROM_LIBRARY") != null){
+            activityFlagLibrary = intent.getStringExtra("IS_FROM_LIBRARY")!!
+        }
+
+        var   tr = url.replace("https://vimeo.com/", "")
+        val segments: List<String> = tr.split("/")
+        val idStr = segments[segments.size - 2]
+        val id = idStr.toInt()
+        //var  tsr  = StringTokenizer(tr, "/")
+       // videoId =   tsr.nextToken()
+        videoId = idStr
        // setupToolbar(url)
         initProgressbar(this)
         hideSystemUis()
@@ -74,50 +104,108 @@ class NewPlayerActivity : BaseActivity() {
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+
     }
 
 
     private fun setupToolbar(url: String) {
-
-
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_TEXT, url)
         startActivity(Intent.createChooser(shareIntent, "pdfDoc"))
-
-
-
-
-     /*   toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white)
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }*/
     }
 
 
 
     private fun setupView() {
         lifecycle.addObserver(vimeoPlayer)
-        vimeoPlayer.initialize( videoId.toInt())
-        //vimeoPlayer.initialize( 59777392)
+        vimeoPlayer.initialize(videoId.toInt())
         vimeoPlayer.seekTo(123452f)
+//        val display = windowManager.defaultDisplay
+//        val size = Point()
+//        display.getRealSize(size)
+//        val width: Float = size.x.toFloat()
+//        val height: Float = size.y.toFloat()
+//        val aspectRatio: Float = width/height
+//        vimeoPlayer.defaultAspectRatio = aspectRatio
+//        vimeoPlayer.defaultOptions.aspectRatio = aspectRatio
         vimeoPlayer.addStateListener(object : VimeoPlayerStateListener {
             override fun onPlaying(duration: Float) {
-                isVideoStatus ="p"
+                isVideoStatus = "p"
+                MainActivity.for_First_time = "N"
             }
 
             override fun onPaused(seconds: Float) {
-                isVideoStatus ="p"
+                isVideoStatus = "p"
+                MainActivity.for_First_time = "N"
+                if (activityFlagTopic.contentEquals("Y") && !videoStatusSeen.contentEquals("c")) {
+                    if (topicStatusId.toInt() <= 0) {
+                        var model = VideoRequestModel(
+                                topic_id.toInt(),
+                                isVideoStatus,
+                                testStatus,
+                                topicSubscription,
+                                userId.toInt()
+                        )
+                        //PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
+                        submitStatus(model)
+                    } else if (topicStatusId.toInt() > 0) {
+                        var model = VideoRequestModelWithStatusID(
+                                topic_id.toInt(),
+                                topicStatusId.toInt(),
+                                isVideoStatus,
+                                testStatus,
+                                topicSubscription,
+                                userId.toInt()
+                        )
+                        //PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
+                        submitStatusWithID(model)
+                    }
+                }
             }
 
             override fun onEnded(duration: Float) {
-                isVideoStatus ="c"
+                isVideoStatus = "c"
+                if (activityFlagTopic.contentEquals("Y") && !videoStatusSeen.contentEquals("c")) {
+                    if (topicStatusId.toInt() <= 0) {
+                        var model = VideoRequestModel(
+                                topic_id.toInt(),
+                                isVideoStatus,
+                                testStatus,
+                                topicSubscription,
+                                userId.toInt()
+                        )
+                        // PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
+                        submitStatus(model)
+                    } else if (topicStatusId.toInt() > 0) {
+                        var model = VideoRequestModelWithStatusID(
+                                topic_id.toInt(),
+                                topicStatusId.toInt(),
+                                isVideoStatus,
+                                testStatus,
+                                topicSubscription,
+                                userId.toInt()
+                        )
+                        // PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
+                        submitStatusWithID(model)
+                    }
+                }
+                if (activityFlagTopic.contentEquals("Y")) {
+                    MainActivity.for_First_time = "N"
+                    onBackPressed()
+                }
+                if (activityFlagLibrary.contentEquals("Y")) {
+                    MainActivity.for_First_time = "N"
+                    onBackPressed()
+                }
             }
         })
         vimeoPlayer.setFullscreenClickListener {
             var requestOrientation = VimeoPlayerActivity.REQUEST_ORIENTATION_AUTO
             startActivityForResult(VimeoPlayerActivity.createIntent(this, requestOrientation, vimeoPlayer), REQUEST_CODE)
         }
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -128,7 +216,7 @@ class NewPlayerActivity : BaseActivity() {
             vimeoPlayer.seekTo(playAt)
 
             var playerState = PlayerState.valueOf(data!!.getStringExtra(VimeoPlayerActivity.RESULT_STATE_PLAYER_STATE)
-                .toString())
+                    .toString())
             when (playerState) {
                 PlayerState.PLAYING -> vimeoPlayer.play()
                 PlayerState.PAUSED -> vimeoPlayer.pause()
@@ -144,10 +232,6 @@ class NewPlayerActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        var   model   =    VideoRequestModel(
-            isVideoStatus,topic_id.toInt()
-        )
-        submitStatus(model)
     }
 
     public override fun onStop() {
@@ -155,19 +239,28 @@ class NewPlayerActivity : BaseActivity() {
         if (myCountDownTimer != null) {
             myCountDownTimer?.cancel()
         }
-
     }
-
 
     private fun submitStatus(lists: VideoRequestModel) {
         viewModel.updateVideoFlag(lists)
             ?.observe(QuizActivityNew@ this, Observer {
                 if (it.isSuccessful) {
-
-                }else{
-                    Toast.makeText(this,"some thing went wrong.", Toast.LENGTH_SHORT).show()
+                    //    Toast.makeText(this, "Status Uodated.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "some thing went wrong.", Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    private fun submitStatusWithID(lists: VideoRequestModelWithStatusID) {
+        viewModel.updateVideoFlagWithID(lists)
+                ?.observe(QuizActivityNew@ this, Observer {
+                    if (it.isSuccessful) {
+                        // Toast.makeText(this, "Status Uodated.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "some thing went wrong.", Toast.LENGTH_SHORT).show()
+                    }
+                })
     }
 
 
@@ -184,8 +277,8 @@ class NewPlayerActivity : BaseActivity() {
 
 
     inner class MyCountDownTimer(
-        millisInFuture: Long,
-        countDownInterval: Long
+            millisInFuture: Long,
+            countDownInterval: Long
     ) :
         CountDownTimer(millisInFuture, countDownInterval) {
         override fun onTick(timeRemaining: Long) {
@@ -196,7 +289,8 @@ class NewPlayerActivity : BaseActivity() {
             player.playWhenReady = false
             playedTime = totalTime
             myCountDownTimer?.cancel()
-            // showAlert()
+
+
         }
     }
 

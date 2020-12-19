@@ -20,6 +20,8 @@ object PrefrenceData {
     private const val USER_USER_ID = "keyUserID"
     private const val USER_NAME = "keyUserName"
     private const val EMAIL_ID = "email_id"
+    private const val VIDEO_STATUS = "video_status"
+    private const val TEST_STATUS = "test_status"
     /*   fun saveClassInfo(userModel: List<ClassModel>?, context: Context) {
            val shared = context.getSharedPreferences(APP_SETTINGS, PRIVATE_MODE)
            val prefsEditor = shared.edit()
@@ -168,5 +170,21 @@ object PrefrenceData {
 
     fun getUserName(context: Context): String {
         return SharedPrefsManager.newInstance(context).getString(USER_NAME, "")!!
+    }
+
+    fun getVideoStatus(context: Context,topicId:String): String {
+        return SharedPrefsManager.newInstance(context).getString(VIDEO_STATUS+"_"+topicId, "")!!
+    }
+
+    fun setVideoStatus(context: Context, videoStatus: String, topicId:String) {
+        return SharedPrefsManager.newInstance(context).putString(VIDEO_STATUS+"_"+topicId, videoStatus)
+    }
+
+    fun getTestStatus(context: Context, topicId:String): String {
+        return SharedPrefsManager.newInstance(context).getString(TEST_STATUS+"_"+topicId, "")!!
+    }
+
+    fun setTestStatus(context: Context, testStatus: String, topicId:String) {
+        return SharedPrefsManager.newInstance(context).putString(TEST_STATUS+"_"+topicId, testStatus)
     }
 }

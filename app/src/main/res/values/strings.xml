@@ -82,7 +82,14 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="logout">Logout</string>
     <string name="sure_for_logout">Are you sure you want to logout?</string>
+    <string name="multiple_login">You are logged in on multiple devices.Please logout from other devices to login here!</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="Logout">Logout</string>
+    <string name="Refund_string"><u>Refund And Cancellation Policy</u></string>
+    <string name="text_string_payment">Total Payment for this Course is \u20B9 </string>
+    <string name="discount_text">Discount \u20B9 </string>
+    <string name="total_payment_text">Pay \u20B9 </string>
 </resources>
