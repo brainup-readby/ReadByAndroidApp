@@ -1,5 +1,3 @@
-# ReadByAndroidApp Latest Changes by Gaurav on 19-12-2020:
-
 - PayTM Payment Gateway Integration   
 - Dashboard handling for Multiple Subscriptions 
 - Restrict one user with multiple login handling using logout 
