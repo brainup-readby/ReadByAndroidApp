@@ -17,5 +17,6 @@ data class DataXX(
         val VIDEO_STATUS: String,
         val TEST_STATUS: String,
         val TOPIC_SUBSCRIPTION: String,
-        val USER_ID: Int
+        val USER_ID: Int,
+        val SUBJECT_ID: Int
 )

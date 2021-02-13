@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data></data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_color"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/white_color"
+            android:clipToPadding="true"
+            android:elevation="5dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_color"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:padding="5dp"
+                    android:text="1. What type of animal is Bambi?"
+                    android:textColor="@color/black33"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/ivDiagram"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/option1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/first"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="One">
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/correct1"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:visibility="visible"-->
+<!--                            android:src="@drawable/correct"-->
+<!--                            android:layout_toLeftOf="@id/first"/>-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/wrong1"-->
+<!--                            android:layout_width="20dp"-->
+<!--                            android:layout_height="20dp"-->
+<!--                            android:visibility="gone"-->
+<!--                            android:src="@drawable/wrong"-->
+<!--                            android:layout_toRightOf="@id/first"/>-->
+                    </TextView>
+                </LinearLayout>
+
+                <View
+                    style="@style/divider_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:id="@+id/option2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/second"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="second" />
+                </LinearLayout>
+
+                <View
+                    style="@style/divider_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:id="@+id/option3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/third"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="third" />
+
+
+                </LinearLayout>
+
+                <View
+                    style="@style/divider_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:id="@+id/option4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/four"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="four" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/divider_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:id="@+id/selectedAnswerLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/selectedAnswerText"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Option Selected : "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/userSelectedAnswer"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/selectedAnswerText"
+                        android:text="Option 1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/correctAnswerLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/correctAnswerText"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Correct Answer : "
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/correctAnswerValue"
+                        style="@style/answer_text_view_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/correctAnswerText"
+                        android:text="Option 4" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+</layout>

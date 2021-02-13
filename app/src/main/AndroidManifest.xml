@@ -59,8 +59,13 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".chapter.ChapterListActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".com.brainup.readbyapp.quiz.RandomQuizResultActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".com.brainup.readbyapp.quiz.ui.RandomQuizDisplayActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
-
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

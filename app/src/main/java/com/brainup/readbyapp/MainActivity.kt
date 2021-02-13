@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         var subscription_flag = "subscription_flag"
         var is_From_Profile = "from_profile"
         var for_First_time = "Y"
+        var random_Quiz_Screen = "N"
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

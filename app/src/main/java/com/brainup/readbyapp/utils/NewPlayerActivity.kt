@@ -145,7 +145,8 @@ class NewPlayerActivity : BaseActivity() {
                                 isVideoStatus,
                                 testStatus,
                                 topicSubscription,
-                                userId.toInt()
+                                userId.toInt(),
+                            MainActivity.subject_id.toInt()
                         )
                         //PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
                         submitStatus(model)
@@ -156,7 +157,8 @@ class NewPlayerActivity : BaseActivity() {
                                 isVideoStatus,
                                 testStatus,
                                 topicSubscription,
-                                userId.toInt()
+                                userId.toInt(),
+                            MainActivity.subject_id.toInt()
                         )
                         //PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
                         submitStatusWithID(model)
@@ -173,7 +175,8 @@ class NewPlayerActivity : BaseActivity() {
                                 isVideoStatus,
                                 testStatus,
                                 topicSubscription,
-                                userId.toInt()
+                                userId.toInt(),
+                            MainActivity.subject_id.toInt()
                         )
                         // PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
                         submitStatus(model)
@@ -184,7 +187,8 @@ class NewPlayerActivity : BaseActivity() {
                                 isVideoStatus,
                                 testStatus,
                                 topicSubscription,
-                                userId.toInt()
+                                userId.toInt(),
+                            MainActivity.subject_id.toInt()
                         )
                         // PrefrenceData.setVideoStatus(this@NewPlayerActivity, isVideoStatus, topic_id);
                         submitStatusWithID(model)

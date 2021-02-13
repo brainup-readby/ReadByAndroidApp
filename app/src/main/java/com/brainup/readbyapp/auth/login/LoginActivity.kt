@@ -3,12 +3,14 @@ package com.brainup.readbyapp.com.brainup.readbyapp.auth.login
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.brainup.readbyapp.MainActivity
 import com.brainup.readbyapp.R
 import com.brainup.readbyapp.base.BaseActivity
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.otp.VerifyOtpActivity
@@ -54,7 +56,7 @@ class LoginActivity : BaseActivity() {
             }
             if (loginState.isDataValid && loginState.isLoginData) {
 
-                callApiToCheckMultipleLogins()
+                callApiToCheckMultipleLogin()
 
 
             } else if (loginState.isDataValid && !loginState.isLoginData) {
@@ -68,19 +70,19 @@ class LoginActivity : BaseActivity() {
              }*/
         })
 
-        //showBottomSheet()
+        //showBottomSheet()callSendLoginOtpApi()
     }
 
-    private fun callApiToCheckMultipleLogins() {
+    private fun callApiToCheckMultipleLogin() {
         progressDialog.show()
-        loginViewModel.checkMultipleLogin(etMobile.text.toString())?.observe(this, Observer {
+        var token = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
+        loginViewModel.checkMultipleLogin1(etMobile.text.toString(), token)?.observe(this, Observer {
             progressDialog.dismiss()
             if (it.isSuccessful) {
-
                 val body = it.body
                 if (body != null && body.status == Constants.STATUS_SUCCESS) {
                     val data = body.data
-                    if(data){
+                    if(data.TOKEN.contentEquals(token)){
                         callSendLoginOtpApi()
                     }else{
                         val items = arrayOf("Logout")
@@ -93,9 +95,9 @@ class LoginActivity : BaseActivity() {
                             .setTitle("Alert!")
                             .setMessage(getString(R.string.multiple_login))
                             .setPositiveButton(
-                                resources.getString(R.string.Logout)
+                                resources.getString(R.string.ok)
                             ) { dialog, id ->
-                                mLogout(etMobile.text.toString())
+                                //mLogout(etMobile.text.toString())
                                 alertDialogBuilder.dismiss()
                             }.setCancelable(false)
                             .show()
@@ -114,15 +116,12 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun mLogout(mobileNumber:String) {
-
         loginViewModel.logout(mobileNumber)?.observe(this, Observer {
-
             if (it.isSuccessful) {
-
                 val body = it.body
                 if (body != null && body.status == Constants.STATUS_SUCCESS) {
                     val data = body.data
-                    if(data.MOBILE_NO.toString().equals(mobileNumber) && data.LOGIN_FLAG.equals("f")){
+                    if(data.MOBILE_NO.toString().contentEquals(mobileNumber) && data.LOGIN_FLAG.contentEquals("f")){
                         PrefrenceData.setUserLoginFromLogout(this, false)
                         PrefrenceData.setMobNo(this, "")
                         PrefrenceData.setUserId(this,"")

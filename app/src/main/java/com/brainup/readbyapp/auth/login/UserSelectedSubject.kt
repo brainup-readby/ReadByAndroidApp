@@ -10,5 +10,6 @@ data class UserSelectedSubject(
     val SUBJECT_PRICE: String,
     val SUBJECT_ID: Int,
     val SUBJECT_NAME: String,
-    val icon_path: String
+    val icon_path: String,
+    val SUBJECT_PROGRESS: Float
 ) : Serializable

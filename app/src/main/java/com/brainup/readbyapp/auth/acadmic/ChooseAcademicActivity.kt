@@ -38,6 +38,7 @@ class ChooseAcademicActivity : BaseActivity() {
     private var courseId: Long? = 0
     private var streamId: Long? = 0
     private var yearId: Long? = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_academic)
@@ -147,7 +148,7 @@ class ChooseAcademicActivity : BaseActivity() {
                 }else{
                     boardList.add(
                         ModelDisplayName(
-                            title = "Test",
+                            title = "Untitled",
                             id = it.BOARD_ID
                         )
                     )

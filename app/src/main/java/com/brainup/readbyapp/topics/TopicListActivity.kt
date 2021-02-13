@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import android.view.View
@@ -20,6 +21,8 @@ import com.brainup.readbyapp.auth.login.UserData
 import com.brainup.readbyapp.auth.login.UserSelectedChapters
 import com.brainup.readbyapp.auth.login.UserSelectedTopics
 import com.brainup.readbyapp.base.BaseActivity
+import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.LoginActivity
+import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.LoginViewModel
 import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.DashBoardActivity
 import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.HomeViewModel
 import com.brainup.readbyapp.com.brainup.readbyapp.quiz.ui.InitializQuizActivity
@@ -28,6 +31,7 @@ import com.brainup.readbyapp.com.brainup.readbyapp.utils.NewPlayerActivity
 import com.brainup.readbyapp.com.brainup.readbyapp.utils.PlayerActivity
 import com.brainup.readbyapp.payment.model.Data
 import com.brainup.readbyapp.payment.model.InitiatePaymentRequest
+import com.brainup.readbyapp.utils.Constants
 import com.brainup.readbyapp.utils.PrefrenceData
 import com.brainup.readbyapp.utils.ViewDocumentHelper
 import com.google.android.material.button.MaterialButton
@@ -35,6 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.paytm.pgsdk.PaytmOrder
 import com.paytm.pgsdk.PaytmPGService
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_topic_list.*
 
 
@@ -65,6 +70,8 @@ class TopicListActivity : BaseActivity(), CellClickListener {
     }
 
     private lateinit var viewModel: HomeViewModel
+    private lateinit var loginViewModel: LoginViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topic_list)
@@ -79,6 +86,7 @@ class TopicListActivity : BaseActivity(), CellClickListener {
                     intent.getSerializableExtra(KEY_SELECTED_TOPIC) as UserSelectedChapters
         }
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         tvStudentName.text = "Hi " + PrefrenceData.getUserName(this)
         //rvTopicList.adapter = TopicListAdapter(selectedSubject.MAS_TOPICS, TopicHandler(this))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -88,15 +96,7 @@ class TopicListActivity : BaseActivity(), CellClickListener {
 
     override fun onResume() {
         super.onResume()
-        if (selectedSubject != null && MainActivity.is_From_Profile.contentEquals("Y")) {
-            if (MainActivity.for_First_time.contentEquals("Y")) {
-                getSelectedChaptersFromProfile()
-            } else if (MainActivity.for_First_time.contentEquals("N")) {
-                refreshSubscriptionTopicList()
-            }
-        } else if (MainActivity.is_From_Profile.contentEquals("N")) {
-            getUserDetails()
-        }
+        callApiToCheckMultipleLogin()
     }
 
     private fun getSelectedChaptersFromProfile() {
@@ -441,6 +441,91 @@ class TopicListActivity : BaseActivity(), CellClickListener {
         dialogBuilderFailed.show()
     }
 
+    private fun callApiToCheckMultipleLogin() {
+        progressDialog.show()
+        var token = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
+        loginViewModel.checkMultipleLogin1(PrefrenceData.getMobNo(this@TopicListActivity), token)?.observe(this, Observer {
+            progressDialog.dismiss()
+            if (it.isSuccessful) {
+                val body = it.body
+                if (body != null && body.status == Constants.STATUS_SUCCESS) {
+                    val data = body.data
+                    if(data.TOKEN.contentEquals(token)){
+                        if (selectedSubject != null && MainActivity.is_From_Profile.contentEquals("Y")) {
+                            if (MainActivity.for_First_time.contentEquals("Y")) {
+                                getSelectedChaptersFromProfile()
+                            } else if (MainActivity.for_First_time.contentEquals("N")) {
+                                refreshSubscriptionTopicList()
+                            }
+                        } else if (MainActivity.is_From_Profile.contentEquals("N")) {
+                            getUserDetails()
+                        }
+                    }else{
+                        val items = arrayOf("Logout")
+                        val alertDialogBuilder =
+                            MaterialAlertDialogBuilder(
+                                this,
+                                R.style.ThemeOverlay_App_MaterialAlertDialog
+                            ).create()
+                        MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                            .setTitle("Alert!")
+                            .setMessage(getString(R.string.multiple_login))
+                            .setPositiveButton(
+                                resources.getString(R.string.ok)
+                            ) { dialog, id ->
+                               // mLogout(PrefrenceData.getMobNo(this@TopicListActivity))
+                                alertDialogBuilder.dismiss()
+                            }.setCancelable(false)
+                            .show()
+                    }
+
+                }
+            } else if (it.code == Constants.ERROR_CODE) {
+                //progressDialog.dismiss()
+                if (!it.errorMessage.isNullOrEmpty()) {
+                    Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this, "Network Error. please try again later.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun mLogout(mobileNumber:String) {
+
+        loginViewModel.logout(mobileNumber)?.observe(this, Observer {
+
+            if (it.isSuccessful) {
+
+                val body = it.body
+                if (body != null && body.status == Constants.STATUS_SUCCESS) {
+                    val data = body.data
+                    if(data.MOBILE_NO.toString().equals(mobileNumber) && data.LOGIN_FLAG.equals("f")){
+                        PrefrenceData.setUserLoginFromLogout(this, false)
+                        PrefrenceData.setMobNo(this, "")
+                        PrefrenceData.setUserId(this,"")
+                        PrefrenceData.clearAllData(this)
+                         dialogBuilder.dismiss()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+
+                }
+            } else if (it.code == Constants.ERROR_CODE) {
+                // progressDialog.dismiss()
+                val msg = it.errorMessage
+                if (!msg.isNullOrBlank()) {
+                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+                }else{
+
+                    Toast.makeText(this, "Network Error please try again in sometime.", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+    }
+
     override fun onCellClickListener(
             selectedTopics: UserSelectedTopics?,
             topicPrevious: UserSelectedTopics?
@@ -451,40 +536,10 @@ class TopicListActivity : BaseActivity(), CellClickListener {
             }
         }
         if (selectedTopics != null) {
-            if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
-                if (selectedTopics.isEnable) {
-                    if (selectedTopics.MAS_TOPIC_STATUS == null) {
-                        val intent = Intent(this@TopicListActivity, NewPlayerActivity::class.java)
-                        intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-                        intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-                        intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-                        intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-                        intent.putExtra("IS_FROM_TOPIC", "Y")
-                        intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
-                        intent.putExtra(PlayerActivity.TEST_STATUS, "")
-                        intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "")
-                        this@TopicListActivity.startActivity(intent)
-                    }
-                    if (selectedTopics?.MAS_TOPIC_STATUS != null) {
-                        val intent = Intent(this@TopicListActivity, NewPlayerActivity::class.java)
-                        intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-                        intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-                        intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-                        intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-                        intent.putExtra("IS_FROM_TOPIC", "Y")
-                            intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
-                            intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
-                            intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "" + selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS)
-                        this@TopicListActivity.startActivity(intent)
-                    }
-                }else {
-                    Toast.makeText(this@TopicListActivity, "Please complete above topics/Videos before this topic.", Toast.LENGTH_LONG).show()
-                }
-
-            } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
-                if (MainActivity.subscription_flag.contentEquals("p")) {
-                    if (selectedTopics?.isEnable) {
-                        if (selectedTopics?.MAS_TOPIC_STATUS == null) {
+            if (selectedTopics.TOPIC_SUBSCRIPTION != null) {
+                if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
+                    if (selectedTopics.isEnable) {
+                        if (selectedTopics.MAS_TOPIC_STATUS == null) {
                             val intent = Intent(this@TopicListActivity, NewPlayerActivity::class.java)
                             intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
                             intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
@@ -496,7 +551,7 @@ class TopicListActivity : BaseActivity(), CellClickListener {
                             intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "")
                             this@TopicListActivity.startActivity(intent)
                         }
-                        if (selectedTopics.MAS_TOPIC_STATUS != null) {
+                        if (selectedTopics?.MAS_TOPIC_STATUS != null) {
                             val intent = Intent(this@TopicListActivity, NewPlayerActivity::class.java)
                             intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
                             intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
@@ -508,101 +563,165 @@ class TopicListActivity : BaseActivity(), CellClickListener {
                             intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "" + selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS)
                             this@TopicListActivity.startActivity(intent)
                         }
-                    }else {
-                        Toast.makeText(this@TopicListActivity, "Please complete above pending topics/Videos before this topic.", Toast.LENGTH_LONG).show()
-                    }
-                } else if (MainActivity.subscription_flag.contentEquals("u")) {
-                    if (MainActivity.course_price.toInt() > 0) {
-                        showDialog()
                     } else {
-                        Toast.makeText(
-                                this@TopicListActivity,
-                                "Price for payment must be greater than 0.",
-                                Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@TopicListActivity, "Please complete above topics/Videos before this topic.", Toast.LENGTH_LONG).show()
+                    }
+
+                } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
+                    if (MainActivity.subscription_flag.contentEquals("p")) {
+                        if (selectedTopics?.isEnable) {
+                            if (selectedTopics?.MAS_TOPIC_STATUS == null) {
+                                val intent = Intent(this@TopicListActivity, NewPlayerActivity::class.java)
+                                intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
+                                intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
+                                intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
+                                intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
+                                intent.putExtra("IS_FROM_TOPIC", "Y")
+                                intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
+                                intent.putExtra(PlayerActivity.TEST_STATUS, "")
+                                intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "")
+                                this@TopicListActivity.startActivity(intent)
+                            }
+                            if (selectedTopics.MAS_TOPIC_STATUS != null) {
+                                val intent = Intent(this@TopicListActivity, NewPlayerActivity::class.java)
+                                intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
+                                intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
+                                intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
+                                intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
+                                intent.putExtra("IS_FROM_TOPIC", "Y")
+                                intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
+                                intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
+                                intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "" + selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS)
+                                this@TopicListActivity.startActivity(intent)
+                            }
+                        } else {
+                            Toast.makeText(this@TopicListActivity, "Please complete above pending topics/Videos before this topic.", Toast.LENGTH_LONG).show()
+                        }
+                    } else if (MainActivity.subscription_flag.contentEquals("u")) {
+                        if (MainActivity.course_price.toInt() > 0) {
+                            showDialog()
+                        } else {
+                            Toast.makeText(
+                                    this@TopicListActivity,
+                                    "Price for payment must be greater than 0.",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
+            } else {
+                Toast.makeText(
+                        this@TopicListActivity,
+                        "Technical issue.Please try again after some time.",
+                        Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
 
     override fun onCellClickListenerPDF(selectedTopics: UserSelectedTopics?) {
         if (selectedTopics != null) {
-            if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
-                if (selectedTopics.BOOK_URL != null) {
-                    ViewDocumentHelper.navigateToCustomTab(
-                            this@TopicListActivity,
-                            selectedTopics.BOOK_URL
-                    )
-                }
-            } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
-                if (MainActivity.subscription_flag.contentEquals("p")) {
+            if (selectedTopics.TOPIC_SUBSCRIPTION != null) {
+                if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
                     if (selectedTopics.BOOK_URL != null) {
                         ViewDocumentHelper.navigateToCustomTab(
                                 this@TopicListActivity,
                                 selectedTopics.BOOK_URL
                         )
-                    }
-                } else if (MainActivity.subscription_flag.contentEquals("u")) {
-                    if (MainActivity.course_price.toInt() > 0) {
-                        showDialog()
                     } else {
                         Toast.makeText(
                                 this@TopicListActivity,
-                                "Price for payment must be greater than 0.",
+                                "URL for book is no longer available.",
                                 Toast.LENGTH_LONG
                         ).show()
                     }
+                } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
+                    if (MainActivity.subscription_flag.contentEquals("p")) {
+                        if (selectedTopics.BOOK_URL != null) {
+                            ViewDocumentHelper.navigateToCustomTab(
+                                    this@TopicListActivity,
+                                    selectedTopics.BOOK_URL
+                            )
+                        } else {
+                            Toast.makeText(
+                                    this@TopicListActivity,
+                                    "URL for book is no longer available.",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else if (MainActivity.subscription_flag.contentEquals("u")) {
+                        if (MainActivity.course_price.toInt() > 0) {
+                            showDialog()
+                        } else {
+                            Toast.makeText(
+                                    this@TopicListActivity,
+                                    "Price for payment must be greater than 0.",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
                 }
+            } else {
+                Toast.makeText(
+                        this@TopicListActivity,
+                        "Technical issue.Please try again after some time.",
+                        Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
 
     override fun onCellClickListenerCard(selectedTopics: UserSelectedTopics?) {
         if (selectedTopics != null) {
-            MainActivity.topic_id = selectedTopics.TOPIC_ID.toString()
-            if (selectedTopics.TOPIC_ID != null) {
-                if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
-                    if (selectedTopics.MAS_TOPIC_STATUS != null) {
-                        if ((selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("") || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("p")
-                                        || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("f")) && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c"))) {
-                            val intent = Intent(this@TopicListActivity, InitializQuizActivity::class.java)
-                            intent.putExtra(QuizActivityNew.KEY_SELECTED_TOPIC, selectedTopics)
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG).show()
-                        }
-                    } else {
-                        Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG
-                        ).show()
-                    }
-                } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
-
-                    if (MainActivity.subscription_flag.contentEquals("p")) {
+            if (selectedTopics.TOPIC_SUBSCRIPTION != null) {
+                MainActivity.topic_id = selectedTopics.TOPIC_ID.toString()
+                if (selectedTopics.TOPIC_ID != null) {
+                    if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
                         if (selectedTopics.MAS_TOPIC_STATUS != null) {
                             if ((selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("") || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("p")
                                             || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("f")) && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c"))) {
                                 val intent = Intent(this@TopicListActivity, InitializQuizActivity::class.java)
                                 intent.putExtra(QuizActivityNew.KEY_SELECTED_TOPIC, selectedTopics)
+                                intent.putExtra(QuizActivityNew.RANDOM_QUIZ_FLAG, "N")
                                 startActivity(intent)
-                            }else {
+                            } else {
                                 Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG).show()
                             }
                         } else {
-                            Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG
+                            ).show()
                         }
-                    } else if (MainActivity.subscription_flag.contentEquals("u")) {
+                    } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
 
-                        if (MainActivity.course_price.toInt() > 0) {
-                            showDialog()
-                        } else {
-                            Toast.makeText(this@TopicListActivity, "Price for payment must be greater than 0.", Toast.LENGTH_LONG).show()
+                        if (MainActivity.subscription_flag.contentEquals("p")) {
+                            if (selectedTopics.MAS_TOPIC_STATUS != null) {
+                                if ((selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("") || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("p")
+                                                || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("f")) && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c"))) {
+                                    val intent = Intent(this@TopicListActivity, InitializQuizActivity::class.java)
+                                    intent.putExtra(QuizActivityNew.KEY_SELECTED_TOPIC, selectedTopics)
+                                    intent.putExtra(QuizActivityNew.RANDOM_QUIZ_FLAG, "N")
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG).show()
+                                }
+                            } else {
+                                Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG).show()
+                            }
+                        } else if (MainActivity.subscription_flag.contentEquals("u")) {
+
+                            if (MainActivity.course_price.toInt() > 0) {
+                                showDialog()
+                            } else {
+                                Toast.makeText(this@TopicListActivity, "Price for payment must be greater than 0.", Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
-                }
 
-            } else {
-                Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this@TopicListActivity, "Please complete video before test.", Toast.LENGTH_LONG).show()
+                }
+            }else {
+                Toast.makeText(this@TopicListActivity, "Technical issue. Please try again after some time.", Toast.LENGTH_LONG).show()
             }
         }
     }

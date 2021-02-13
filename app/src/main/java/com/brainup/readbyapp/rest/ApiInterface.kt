@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import com.brainup.readbyapp.auth.login.UserData
 import com.brainup.readbyapp.auth.registration.BoardData
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.acadmic.SubscriptionModel
+import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.LogoutDataModel
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.LogoutResponse
-import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.RateAppResponse
-import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.RateAppRequest
 import com.brainup.readbyapp.com.brainup.readbyapp.auth.registration.UserInfo
+import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.*
 import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModel
 import com.brainup.readbyapp.com.brainup.readbyapp.quiz.model.model.VideoRequestModelWithStatusID
 import com.brainup.readbyapp.payment.model.Data
@@ -80,6 +80,12 @@ interface ApiInterface {
         @Query(Constants.QUERY_MOB_NO) mobNo: String?
     ): LiveData<ApiResponse<CommonResponse<Boolean>>>
 
+    @GET(Routs.CHECK_Multiple_LOGIN)
+    fun checkUserMultipleLogin1(
+        @Query(Constants.QUERY_MOB_NO) mobNo: String?,
+        @Query(Constants.QUERY_TOKEN) token: String
+    ): LiveData<ApiResponse<LogoutResponse>>
+
     @GET(Routs.LOGOUT_USER)
     fun logout(
         @Query(Constants.QUERY_MOB_NO) mobNo: String?
@@ -88,6 +94,11 @@ interface ApiInterface {
     @POST(Routs.SEND_PAYMENT_STATUS)
     fun sendPaymentStatus(@Body paymentStatus:Data): LiveData<ApiResponse<InitiatePaymentResponse>>
 
+    @GET(Routs.GET_RANDOM_QUIZ)
+    fun getRandomQuestionsData(@Query(Constants.QUERY_SUBJECT) id: String): LiveData<ApiResponse<RandomQuizData>>
+
+    @POST(Routs.SAVE_RANDOM_QUIZ_RESULT)
+    fun submitRandomQuizResultData(@Body dataSaveQuizResult:SaveQuizResultRequest): LiveData<ApiResponse<SaveQuizResponseData>>
 
     /*@GET(Routs.POST_LOGIN)
     fun postLogin(

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.airbnb.lottie.LottieAnimationView
 import com.brainup.readbyapp.MainActivity
 import com.brainup.readbyapp.R
@@ -18,6 +20,7 @@ import com.brainup.readbyapp.auth.login.UserSelectedChapters
 import com.brainup.readbyapp.auth.login.UserSelectedSubject
 import com.brainup.readbyapp.auth.login.UserSelectedTopics
 import com.brainup.readbyapp.base.BaseActivity
+import com.brainup.readbyapp.com.brainup.readbyapp.auth.login.LoginViewModel
 import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.DashBoardActivity
 import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.HomeViewModel
 import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.RateAppRequest
@@ -60,6 +63,7 @@ class LibTopicListActivity : BaseActivity() {
     private lateinit var paymentFailedAnimation: LottieAnimationView
     private lateinit var failedString: TextView
     private lateinit var txnFailed: TextView
+    private lateinit var loginViewModel: LoginViewModel
 
     companion object {
         const val KEY_TITLE = "keyTitle"
@@ -77,6 +81,7 @@ class LibTopicListActivity : BaseActivity() {
         dialogBuilderFailed = MaterialAlertDialogBuilder(this).create()
         dialogBuilderSuccess = MaterialAlertDialogBuilder(this).create()
         viewModel = ViewModelProvider(this).get(LibTopicViewModel::class.java)
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         priceCourse = MainActivity.course_price
         title = intent.getStringExtra(TopicListActivity.KEY_TITLE)
         val selectedSubject =
@@ -90,283 +95,161 @@ class LibTopicListActivity : BaseActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
+
     inner class TopicHandler(val context: Context) {
         fun onItemClick(selectedTopics: UserSelectedTopics) {
-           // val videoStatus = PrefrenceData.getVideoStatus(this.context, selectedTopics.TOPIC_ID.toString())
-            // if (selectedTopics.isEnable) {
 
-            if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
-                //if (selectedTopics.isEnable) {
-                    //if (selectedTopics.MAS_TOPIC_STATUS == null) {
-                        val intent = Intent(context, NewPlayerActivity::class.java)
-                        intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-                        intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-                        intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-                        intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-                        intent.putExtra("IS_FROM_LIBRARY", "Y")
-                        if (selectedTopics.MAS_TOPIC_STATUS != null) {
-                            intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
-                            intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
-                        } else {
-                            intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
-                            intent.putExtra(PlayerActivity.TEST_STATUS, "")
-                        }
-                        context.startActivity(intent)
-//                    } else {
-//                        Toast.makeText(
-//                                this@LibTopicListActivity,
-//                                "you have already  seen  this  topic video ",
-//                                Toast.LENGTH_LONG
-//                        ).show()
-//                    }
+            progressDialog.show()
+            var token = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
+            loginViewModel.checkMultipleLogin1(PrefrenceData.getMobNo(this@LibTopicListActivity), token)?.observe(this@LibTopicListActivity, Observer {
+                progressDialog.dismiss()
+                if (it.isSuccessful) {
+                    val body = it.body
+                    if (body != null && body.status == Constants.STATUS_SUCCESS) {
+                        val data = body.data
+                        if(data.TOKEN.contentEquals(token)) {
+                            if (selectedTopics.TOPIC_SUBSCRIPTION != null) {
+                            if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
+                                val intent = Intent(context, NewPlayerActivity::class.java)
+                                intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
+                                intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
+                                intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
+                                intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
+                                intent.putExtra("IS_FROM_LIBRARY", "Y")
+                                if (selectedTopics.MAS_TOPIC_STATUS != null) {
+                                    intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
+                                    intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
+                                    intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS)
+                                } else {
+                                    intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
+                                    intent.putExtra(PlayerActivity.TEST_STATUS, "")
+                                    intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "")
+                                }
+                                context.startActivity(intent)
+                            } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
 
-               // }
-//                if (selectedTopics.MAS_TOPIC_STATUS != null
-//                        && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("p") || videoStatus.contentEquals("p"))) {
-//                    val intent = Intent(context, NewPlayerActivity::class.java)
-//                    intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-//                    intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-//                    intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-//                    intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-//                    if (selectedTopics.MAS_TOPIC_STATUS != null) {
-//                        intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
-//                        intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
-//                    } else {
-//                        intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
-//                        intent.putExtra(PlayerActivity.TEST_STATUS, "")
-//                    }
-//                    context.startActivity(intent)
-//                } else if (selectedTopics.MAS_TOPIC_STATUS != null
-//                        && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c") || videoStatus.contentEquals("c"))) {
-//
-//                    val intent = Intent(context, NewPlayerActivity::class.java)
-//                    intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-//                    intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-//                    intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-//                    intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-//                    if (selectedTopics.MAS_TOPIC_STATUS != null) {
-//                        intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
-//                        intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
-//                    } else {
-//                        intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
-//                        intent.putExtra(PlayerActivity.TEST_STATUS, "")
-//                    }
-//                    context.startActivity(intent)
-//
-//                } else {
-//                    Toast.makeText(
-//                            this@LibTopicListActivity,
-//                            "Please complete above topics/Videos before this topic.",
-//                            Toast.LENGTH_LONG
-//                    ).show()
-//                }
-            }
-            else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
+                                if (MainActivity.subscription_flag.contentEquals("p")) {
+                                    val intent = Intent(context, NewPlayerActivity::class.java)
+                                    intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
+                                    intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
+                                    intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
+                                    intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
+                                    intent.putExtra("IS_FROM_LIBRARY", "Y")
 
-                if (MainActivity.subscription_flag.contentEquals("p")) {
+                                    if (selectedTopics.MAS_TOPIC_STATUS != null) {
+                                        intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
+                                        intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
+                                        intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS)
+                                    } else {
+                                        intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
+                                        intent.putExtra(PlayerActivity.TEST_STATUS, "")
+                                        intent.putExtra(PlayerActivity.VIDEO_SEEN_STATUS, "")
+                                    }
+                                    context.startActivity(intent)
+                                } else if (MainActivity.subscription_flag.contentEquals("u")) {
 
-                //    if (selectedTopics.isEnable) {
-                  //      if (selectedTopics.MAS_TOPIC_STATUS == null) {
-                            val intent = Intent(context, NewPlayerActivity::class.java)
-                            intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-                            intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-                            intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-                            intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-                            intent.putExtra("IS_FROM_LIBRARY", "Y")
-                            if (selectedTopics.MAS_TOPIC_STATUS != null) {
-                                intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
-                                intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
-                            } else {
-                                intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
-                                intent.putExtra(PlayerActivity.TEST_STATUS, "")
+                                    if (MainActivity.course_price.toInt() > 0) {
+                                        showDialog()
+                                    } else {
+                                        Toast.makeText(
+                                                this@LibTopicListActivity,
+                                                "Price for payment must be greater than 0.",
+                                                Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+
+
+                                }
                             }
-                            context.startActivity(intent)
-//                        } else {
-//                            Toast.makeText(
-//                                    this@LibTopicListActivity,
-//                                    "you have already  seen  this  topic video ",
-//                                    Toast.LENGTH_LONG
-//                            ).show()
-//                        }
-//
-//                    }
-//                    if (selectedTopics.MAS_TOPIC_STATUS != null
-//                            && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("p") || videoStatus.contentEquals("p"))) {
-//                        val intent = Intent(context, NewPlayerActivity::class.java)
-//                        intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-//                        intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-//                        intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-//                        intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-//                        if (selectedTopics.MAS_TOPIC_STATUS != null) {
-//                            intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
-//                            intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
-//                        } else {
-//                            intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
-//                            intent.putExtra(PlayerActivity.TEST_STATUS, "")
-//                        }
-//                        context.startActivity(intent)
-//                    } else if (selectedTopics.MAS_TOPIC_STATUS != null
-//                            && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c") || videoStatus.contentEquals("c"))) {
-//
-//                        val intent = Intent(context, NewPlayerActivity::class.java)
-//                        intent.putExtra(PlayerActivity.KEY_TITLE, selectedTopics.TOPIC_NAME)
-//                        intent.putExtra(PlayerActivity.KEY_URL, selectedTopics.VIDEO_URL)
-//                        intent.putExtra(PlayerActivity.TOPIC_ID, "" + selectedTopics.TOPIC_ID)
-//                        intent.putExtra(PlayerActivity.USER_SUBS, "" + selectedTopics.TOPIC_SUBSCRIPTION)
-//                        if (selectedTopics.MAS_TOPIC_STATUS != null) {
-//                            intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + selectedTopics.MAS_TOPIC_STATUS.TOPIC_STATUS_ID)
-//                            intent.putExtra(PlayerActivity.TEST_STATUS, selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS)
-//                        } else {
-//                            intent.putExtra(PlayerActivity.TOPIC_STATUS_ID, "" + 0)
-//                            intent.putExtra(PlayerActivity.TEST_STATUS, "")
-//                        }
-//                        context.startActivity(intent)
-//                    } else {
-//                        Toast.makeText(
-//                                this@LibTopicListActivity,
-//                                "Please complete above topics/Videos before this topic.",
-//                                Toast.LENGTH_LONG
-//                        ).show()
-//                    }
-                }
+                        }else {
+                                Toast.makeText(
+                                        this@LibTopicListActivity,
+                                        "Technical issue.Please try again after some time.",
+                                        Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }else{
+                            val items = arrayOf("Logout")
+                            val alertDialogBuilder =
+                                MaterialAlertDialogBuilder(
+                                    this@LibTopicListActivity,
+                                    R.style.ThemeOverlay_App_MaterialAlertDialog
+                                ).create()
+                            MaterialAlertDialogBuilder(this@LibTopicListActivity, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                                .setTitle("Alert!")
+                                .setMessage(getString(R.string.multiple_login))
+                                .setPositiveButton(
+                                    resources.getString(R.string.ok)
+                                ) { dialog, id ->
+                                    alertDialogBuilder.dismiss()
+                                }.setCancelable(false)
+                                .show()
+                        }
 
-                else if (MainActivity.subscription_flag.contentEquals("u")) {
-
-                    if (MainActivity.course_price.toInt() > 0) {
-                        showDialog()
-                    } else {
-                        Toast.makeText(
-                                this@LibTopicListActivity,
-                                "Price for payment must be greater than 0.",
-                                Toast.LENGTH_LONG
-                        ).show()
                     }
-
-
+                } else if (it.code == Constants.ERROR_CODE) {
+                    //progressDialog.dismiss()
+                    if (!it.errorMessage.isNullOrEmpty()) {
+                        Toast.makeText(this@LibTopicListActivity, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this@LibTopicListActivity, "Network Error. please try again later.", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+            })
+
 
         }
 
         fun onPdfButtonClick(selectedTopics: UserSelectedTopics) {
-            if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
-
-                if (selectedTopics.BOOK_URL != null) {
-                    ViewDocumentHelper.navigateToCustomTab(context, selectedTopics.BOOK_URL)
-                }
-
-            } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
-
-                if (MainActivity.subscription_flag.contentEquals("p")) {
+            if (selectedTopics.TOPIC_SUBSCRIPTION != null) {
+                if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
 
                     if (selectedTopics.BOOK_URL != null) {
                         ViewDocumentHelper.navigateToCustomTab(context, selectedTopics.BOOK_URL)
-                    }
-                } else if (MainActivity.subscription_flag.contentEquals("u")) {
-
-                    if (MainActivity.course_price.toInt() > 0) {
-                        showDialog()
-                    } else {
+                    }else {
                         Toast.makeText(
                                 this@LibTopicListActivity,
-                                "Price for payment must be greater than 0.",
+                                "URL for book is no longer available.",
                                 Toast.LENGTH_LONG
                         ).show()
                     }
 
+                } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
 
+                    if (MainActivity.subscription_flag.contentEquals("p")) {
+
+                        if (selectedTopics.BOOK_URL != null) {
+                            ViewDocumentHelper.navigateToCustomTab(context, selectedTopics.BOOK_URL)
+                        }else {
+                            Toast.makeText(
+                                    this@LibTopicListActivity,
+                                    "URL for book is no longer available.",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else if (MainActivity.subscription_flag.contentEquals("u")) {
+
+                        if (MainActivity.course_price.toInt() > 0) {
+                            showDialog()
+                        } else {
+                            Toast.makeText(
+                                    this@LibTopicListActivity,
+                                    "Price for payment must be greater than 0.",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+
+                    }
                 }
+            }else {
+                Toast.makeText(
+                        this@LibTopicListActivity,
+                        "Technical issue.Please try again after some time.",
+                        Toast.LENGTH_LONG
+                ).show()
             }
         }
-
-//        fun onCardClick(selectedTopics: UserSelectedTopics) {
-//            val videoStatus = PrefrenceData.getVideoStatus(this.context, selectedTopics.TOPIC_ID.toString());
-//            MainActivity.topic_id = selectedTopics.TOPIC_ID.toString()
-//            if (selectedTopics.TOPIC_ID != null) {
-//
-//                if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("f")) {
-//                    if (selectedTopics.MAS_TOPIC_STATUS != null) {
-//                        if ((selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("") || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("p"))
-//                                && (selectedTopics.VIDEO_STATUS.contentEquals("c") || videoStatus.contentEquals("c"))) {
-//                            val intent = Intent(this@LibTopicListActivity, InitializQuizActivity::class.java)
-//                            intent.putExtra(QuizActivityNew.KEY_SELECTED_TOPIC, selectedTopics)
-//                            startActivity(intent)
-//                        } else if (selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("c")
-//                                && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c") || videoStatus.contentEquals("c"))) {
-//                            val intent = Intent(this@LibTopicListActivity, InitializQuizActivity::class.java)
-//                            intent.putExtra(QuizActivityNew.KEY_SELECTED_TOPIC, selectedTopics)
-//                            startActivity(intent)
-//                            // Toast.makeText(this@TopicListActivity,"You have  already done video and test ",Toast.LENGTH_LONG).show()
-//
-//                        } else {
-//                            Toast.makeText(
-//                                    this@LibTopicListActivity,
-//                                    "Please complete video before test.",
-//                                    Toast.LENGTH_LONG
-//                            ).show()
-//                        }
-//                    } else {
-//                        Toast.makeText(
-//                                this@LibTopicListActivity,
-//                                "Please complete video before test.",
-//                                Toast.LENGTH_LONG
-//                        ).show()
-//                    }
-//                } else if (selectedTopics.TOPIC_SUBSCRIPTION.contentEquals("p")) {
-//
-//                    if (MainActivity.subscription_flag.contentEquals("p")) {
-//                        if (selectedTopics.MAS_TOPIC_STATUS != null) {
-//                            if ((selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("") || selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("p"))
-//                                    && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c") || videoStatus.contentEquals("c"))) {
-//                                val intent = Intent(this@LibTopicListActivity, InitializQuizActivity::class.java)
-//                                intent.putExtra(QuizActivityNew.KEY_SELECTED_TOPIC, selectedTopics)
-//                                startActivity(intent)
-//                            } else if (selectedTopics.MAS_TOPIC_STATUS.TEST_STATUS.contentEquals("c")
-//                                    && (selectedTopics.MAS_TOPIC_STATUS.VIDEO_STATUS.contentEquals("c") || videoStatus.contentEquals("c"))) {
-//                                val intent = Intent(this@LibTopicListActivity, InitializQuizActivity::class.java)
-//                                intent.putExtra(QuizActivityNew.KEY_SELECTED_TOPIC, selectedTopics)
-//                                startActivity(intent)
-//                                // Toast.makeText(this@TopicListActivity,"You have  already done video and test ",Toast.LENGTH_LONG).show()
-//
-//                            } else {
-//                                Toast.makeText(
-//                                        this@LibTopicListActivity,
-//                                        "Please complete video before test.",
-//                                        Toast.LENGTH_LONG
-//                                ).show()
-//                            }
-//                        } else {
-//                            Toast.makeText(
-//                                    this@LibTopicListActivity,
-//                                    "Please complete video before test.",
-//                                    Toast.LENGTH_LONG
-//                            ).show()
-//                        }
-//                    } else if (MainActivity.subscription_flag.contentEquals("u")) {
-//
-//                        if (MainActivity.course_price.toInt() > 0) {
-//                            showDialog()
-//                        } else {
-//
-//                            Toast.makeText(
-//                                    this@LibTopicListActivity,
-//                                    "Price for payment must be greater than 0.",
-//                                    Toast.LENGTH_LONG
-//                            ).show()
-//                        }
-//
-//
-//                    }
-//                }
-//            } else {
-//
-//                Toast.makeText(
-//                        this@LibTopicListActivity,
-//                        "Please complete video before test.",
-//                        Toast.LENGTH_LONG
-//                ).show()
-//            }
-//        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

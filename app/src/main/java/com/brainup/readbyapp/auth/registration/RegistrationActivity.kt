@@ -2,6 +2,7 @@ package com.brainup.readbyapp.com.brainup.readbyapp.auth.registration
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -91,7 +92,8 @@ class RegistrationActivity : BaseActivity() {
             FIRST_NAME = firstName,
             LAST_NAME = lastName,
             MOBILE_NO = mobNo,
-            EMAIL_ID = email
+            EMAIL_ID = email,
+            DEVICE_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)
         )
         viewModel.registration(userInfo)?.observe(this, Observer {
             progressDialog.dismiss()

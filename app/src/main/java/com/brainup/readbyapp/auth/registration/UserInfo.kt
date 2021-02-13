@@ -13,6 +13,6 @@ data class UserInfo(
     val STATE: String = "",
     val PINCODE: String = "",
     val IS_ACTIVE: String = "",
-    val DEVICE_ID: String = "android",
+    val DEVICE_ID: String = "",
     val SESSION_TOKEN: String = ""
 )

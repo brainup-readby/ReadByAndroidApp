@@ -35,6 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="5dp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_timer_black_24dp" />
 
                 <TextView
@@ -44,6 +45,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/ivTimer"
                     android:text="15:00"
+                    android:visibility="gone"
                     android:textColor="@color/black33"
                     android:textSize="16sp"
                     android:textStyle="bold" />

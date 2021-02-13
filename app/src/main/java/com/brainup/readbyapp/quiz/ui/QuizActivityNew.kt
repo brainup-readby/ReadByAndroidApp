@@ -38,6 +38,10 @@ class QuizActivityNew : BaseActivity() {
     private lateinit var viewModel: QuizViewModel
     companion object {
         const val KEY_SELECTED_TOPIC = "keySelectedTopic"
+        const val RANDOM_QUIZ_FLAG = "randomQuizFlag"
+        const val SUBJECT_ID = "subjectId"
+        const val SUBJECT_NAME = "subjectName"
+        const val TITLE = "title"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,13 +94,8 @@ class QuizActivityNew : BaseActivity() {
                    }
 
         }
-
             val selectedSubject = intent.getSerializableExtra(KEY_SELECTED_TOPIC) as UserSelectedTopics
             getQusList(selectedSubject.TOPIC_ID.toString())
-
-
-
-
     }
 
     private fun getApiCallStatus(lists: QusRequestModel): Boolean {

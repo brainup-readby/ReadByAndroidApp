@@ -147,7 +147,50 @@
             android:visibility="gone"
             android:src="@drawable/btn_live_classes" />
 
+        <LinearLayout
+            android:id="@+id/test_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp">
+
+            <TextView
+                android:id="@+id/randomQuizText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:textSize="16sp"
+                android:text="Take Test :"
+                android:textColor="@color/black33" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/subjectListForTest"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                app:errorEnabled="true"
+                android:layout_toRightOf="@id/randomQuizText"
+                >
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/subjectSpinnerForTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:focusable="true"
+                    android:hint="Select Subject"
+                    android:padding="10dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+
+
         <View
+            android:id="@+id/speratorLineProgress"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="20dp"
@@ -157,6 +200,7 @@
             android:background="@color/blackCC" />
 
         <TextView
+            android:id="@+id/studentProgressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -164,11 +208,20 @@
             android:text="STUDENT PROGRESS"
             android:textColor="@color/black33" />
 
-        <ImageView
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/noProgressData"
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:src="@drawable/pichart" />
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:text="Student progress not available."
+            android:textColor="@color/black33" />
 
         <RelativeLayout
             android:layout_width="wrap_content"

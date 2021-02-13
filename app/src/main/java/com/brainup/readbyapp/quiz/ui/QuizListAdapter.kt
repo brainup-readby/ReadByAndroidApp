@@ -153,11 +153,6 @@ class QuizListAdapter(
                 getSetSelctionChange(topic!!.RB_MULTIPLE_OPTION,topic!!.RB_MULTIPLE_OPTION[3].OPTION_ID)
             }
         }
-
-
-
-
-
         activity?.setPositionOfQus(position)
         itemBinding.executePendingBindings()
     }
@@ -170,8 +165,6 @@ class QuizListAdapter(
                  item.SET_SELECTION = false
              }
         }
-
-
     }
 
     override fun getItemCount(): Int {

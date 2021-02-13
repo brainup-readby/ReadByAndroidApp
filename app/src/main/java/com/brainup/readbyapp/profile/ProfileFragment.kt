@@ -81,9 +81,9 @@ class ProfileFragment : BaseFragment() {
 
                         val body = it.body
                         if (body != null && body.status == Constants.STATUS_SUCCESS) {
-                            val data = body.data
-                            val mobNo = PrefrenceData.getMobNo(requireContext()).toLong()
-                            if(data.MOBILE_NO.equals(mobNo) && data.LOGIN_FLAG.equals("f")){
+                           // val data = body.data
+                           // val mobNo = PrefrenceData.getMobNo(requireContext()).toLong()
+                           // if(data.MOBILE_NO.equals(mobNo) && data.LOGIN_FLAG.equals("f")){
                                 PrefrenceData.setUserLoginFromLogout(this.requireContext(), false)
                                 PrefrenceData.setMobNo(this.requireContext(), "")
                                 PrefrenceData.setUserId(this.requireContext(),"")
@@ -92,7 +92,7 @@ class ProfileFragment : BaseFragment() {
                                 intent.flags =
                                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 startActivity(intent)
-                            }
+                           // }
 
                         }
                     } else if (it.code == Constants.ERROR_CODE) {

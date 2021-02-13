@@ -29,6 +29,13 @@ class LoginViewModel : ViewModel() {
         return ApiClient.client?.checkUserMultipleLogin(mobNo)
     }
 
+    fun checkMultipleLogin1(mobNo: String, token:String): LiveData<ApiResponse<LogoutResponse>>? {
+        val mob = StringBuilder()
+        // mob.append("+91")
+        mob.append(mobNo)
+        return ApiClient.client?.checkUserMultipleLogin1(mobNo, token)
+    }
+
     fun sendRegOtp(mobNo: String): LiveData<ApiResponse<CommonResponse<String>>>? {
         val mob = StringBuilder()
         mob.append("+91")

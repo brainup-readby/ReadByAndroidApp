@@ -18,5 +18,6 @@ object Routs {
     const val RATE_APP_API = "readBy/saveFeedBack"
     const val CHECK_Multiple_LOGIN = "getLoginDetail"
     const val SEND_PAYMENT_STATUS = "readBy/updateUserTransaction"
-
+    const val GET_RANDOM_QUIZ = "readBy/getRandomQuiz"
+    const val SAVE_RANDOM_QUIZ_RESULT = "readBy/saveRandonQuizResult "
 }

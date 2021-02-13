@@ -30,6 +30,8 @@ object Constants {
     const val ERROR_CODE = 400
     const val QUERY_MOB_NO = "mobileNo"
     const val QUERY_OTP = "otp"
+    const val QUERY_TOKEN = "token"
+    const val QUERY_SUBJECT = "subjectId"
     const val KEY_MESSAGE = "data"
     const val REQ_USER_CONSENT = 202
     const val TOKEN =

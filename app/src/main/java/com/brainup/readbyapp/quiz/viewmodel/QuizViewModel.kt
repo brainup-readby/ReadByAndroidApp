@@ -2,6 +2,9 @@ package com.brainup.readbyapp.com.brainup.readbyapp.quiz.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.RandomQuizData
+import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.SaveQuizResponseData
+import com.brainup.readbyapp.com.brainup.readbyapp.dashboard.model.SaveQuizResultRequest
 import com.brainup.readbyapp.payment.model.InitiatePaymentRequest
 import com.brainup.readbyapp.payment.model.InitiatePaymentResponse
 import com.brainup.readbyapp.quiz.model.model.QusListResponse
@@ -20,7 +23,13 @@ class QuizViewModel : ViewModel() {
         return ApiClient.client?.submitQuizList(list)
     }
 
+    fun getRandomQuestionsData(id: String): LiveData<ApiResponse<RandomQuizData>>? {
+        return ApiClient.client?.getRandomQuestionsData(id)
+    }
 
+    fun submitRandomQuizResultData(dataSaveQuizResult: SaveQuizResultRequest): LiveData<ApiResponse<SaveQuizResponseData>>?{
+        return ApiClient.client?.submitRandomQuizResultData(dataSaveQuizResult)
+    }
   /*  fun subscribedQuestions(
         id: String,
         questionPaperId: String
